@@ -1,0 +1,113 @@
+# ==========================
+# 🗂️ GLOBAL (Sistema / Editores / Archivos temporales)
+# ==========================
+.DS_Store
+Thumbs.db
+*.log
+*.log.*
+*.tmp
+*.bak
+*.swp
+*.swo
+*.code-workspace
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# ==========================
+# 🚀 FRONTEND (React - carpeta: /frontend)
+# ==========================
+/screenplay_initializr/node_modules/
+/screenplay_initializr/build/
+/screenplay_initializr/.env
+/screenplay_initializr/.env.local
+/screenplay_initializr/.env.development
+/screenplay_initializr/.env.production
+/screenplay_initializr/.env.test
+/screenplay_initializr/.env.*.local
+/screenplay_initializr/.cache/
+/screenplay_initializr/npm-debug.log*
+/screenplay_initializr/yarn-debug.log*
+/screenplay_initializr/yarn-error.log*
+/screenplay_initializr/pnpm-debug.log
+/screenplay_initializr/.parcel-cache/
+/screenplay_initializr/coverage/
+
+# Si usas testing tools
+/screenplay_initializr/test-results/
+/screenplay_initializr/jest-report/
+/screenplay_initializr/cypress/screenshots/
+/screenplay_initializr/cypress/videos/
+
+# ==========================
+# ⚙️ BACKEND (Express - carpeta: /backend)
+# ==========================
+/screenplay_initializr_back/node_modules/
+/screenplay_initializr_back/dist/
+/screenplay_initializr_back/build/
+/screenplay_initializr_back/.env
+/screenplay_initializr_back/.env.local
+/screenplay_initializr_back/.env.development
+/screenplay_initializr_back/.env.production
+/screenplay_initializr_back/.env.test
+/screenplay_initializr_back/.env.*.local
+/screenplay_initializr_back/npm-debug.log*
+/screenplay_initializr_back/yarn-debug.log*
+/screenplay_initializr_back/yarn-error.log*
+/screenplay_initializr_back/pnpm-debug.log
+/screenplay_initializr_back/coverage/
+/screenplay_initializr_back/test-results/
+/screenplay_initializr_back/jest-report/
+
+# ==========================
+# 🧪 Cobertura Global (si corres cobertura desde raíz)
+/coverage/
+/.nyc_output/
+
+# ==========================
+# 🐳 Docker
+# ==========================
+.dockerignore
+docker-compose.override.yml
+*.container
+
+# ==========================
+# ☁️ Plataformas Cloud
+# ==========================
+
+# Firebase
+.firebase/
+firestore-debug.log
+
+# Vercel
+.vercel/
+vercel.json
+
+# Netlify
+.netlify/
+netlify.toml
+
+# Heroku
+.heroku/
+
+# ==========================
+# 📦 PM2
+# ==========================
+pids/
+*.pid
+*.seed
+*.pid.lock
+pm2.log
+
+# ==========================
+# 🔧 Monorepo o herramientas modernas (opcional)
+/apps/**/node_modules/
+/apps/**/dist/
+/apps/**/build/
+/packages/**/node_modules/
+/packages/**/dist/
+/packages/**/build/
+/.turbo/
+/.next/

@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+
+@theme {
+  --color-gray-light: #E9E9E9;
+}
+
+/* Líneas verticales entre carpetas */
+.tree ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0.75rem; /* igual a pl-3 */
+  height: 100%;
+  border-left: 1px solid #d1d5db; /* gray-300 */
+}
+
+/* Línea horizontal de cada ítem hacia su padre */
+.tree li::before {
+  content: '';
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 0.75rem;
+  height: 1px;
+  background-color: #d1d5db;
+}
