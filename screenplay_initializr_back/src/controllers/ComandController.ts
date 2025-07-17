@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { smartCapitalize } from "../utils/capitalize";
 const { exec } = require("child_process");
 
 export class ComandController {
@@ -27,7 +28,7 @@ export class ComandController {
   };
 
   static createFeature= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { name, nameSubFolder, examples} = req.body;
     const command =
       `gradle generateFeature ` +
@@ -100,15 +101,19 @@ export class ComandController {
   };
 
   static createTask= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { name, typeTask, method} = req.body;
+    const nameCapitalize = smartCapitalize(name)
+    
     let command =
       `gradle generateTask ` +
-      `--name=${name} ` +
+      `--name=${nameCapitalize} ` +
       `--typeTask=${typeTask} `
-
     if (typeTask === 'REST') {
-      command += `--method=${method}`
+      const methodCapitalize = smartCapitalize(method)
+      console.log(methodCapitalize)
+
+      command += `--method=${methodCapitalize}`
     }
 
     try {
@@ -127,12 +132,12 @@ export class ComandController {
   };
 
   static createPipeline= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { name, type} = req.body;
     const command =
       `gradle generatePipeline ` +
       `--name=${name} ` +
-      `--type=${type} `
+      `--type=${type}`
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
@@ -149,11 +154,11 @@ export class ComandController {
   };
 
   static createDataBase= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
-    const { dataBase} = req.body;
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const { type } = req.body;
     const command =
       `gradle dbConnection ` +
-      `--dataBase=${dataBase} `
+      `--dataBase=${type} `
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
