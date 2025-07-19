@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import { smartCapitalize } from "../utils/capitalize";
 const { exec } = require("child_process");
+import fs from "fs";
+import { param } from "express-validator";
 
 export class ComandController {
   static createProject = async (req: Request, res: Response) => {
@@ -20,21 +22,25 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createFeature= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
-    const { name, nameSubFolder, examples} = req.body;
+  static createFeature = async (req: Request, res: Response) => {
+    const projectPath =
+      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const { name, nameSubFolder, examples } = req.body;
     const command =
       `gradle generateFeature ` +
       `--name=${name} ` +
       `--nameSubFolder=${nameSubFolder} ` +
-      `--examples=${examples}`
+      `--examples=${examples}`;
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
@@ -43,20 +49,23 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createRunners= async (req: Request, res: Response) => {
+  static createRunners = async (req: Request, res: Response) => {
     const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
-    const { name, folderName} = req.body;
+    const { name, folderName } = req.body;
     const command =
       `gradle generateRunner ` +
       `--name=${name} ` +
-      `--folderName=${folderName}`
+      `--folderName=${folderName}`;
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
@@ -65,24 +74,26 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createRestInteraction= async (req: Request, res: Response) => {
+  static createRestInteraction = async (req: Request, res: Response) => {
     const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
-    const { typeInteraction, nameInteraction} = req.body;
-    
+    const { typeInteraction, nameInteraction } = req.body;
+
     let command =
       `gradle generateRestInteraction ` +
-      `--typeInteraction=${typeInteraction} `
-   
+      `--typeInteraction=${typeInteraction} `;
 
-    if (typeInteraction === 'GENERIC') {
-      command += `--nameInteraction=${nameInteraction}`
+    if (typeInteraction === "GENERIC") {
+      command += `--nameInteraction=${nameInteraction}`;
     }
 
     try {
@@ -93,27 +104,31 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(500).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createTask= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
-    const { name, typeTask, method} = req.body;
-    const nameCapitalize = smartCapitalize(name)
-    
+  static createTask = async (req: Request, res: Response) => {
+    const projectPath =
+      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const { name, typeTask, method } = req.body;
+    const nameCapitalize = smartCapitalize(name);
+
     let command =
       `gradle generateTask ` +
       `--name=${nameCapitalize} ` +
-      `--typeTask=${typeTask} `
-    if (typeTask === 'REST') {
-      const methodCapitalize = smartCapitalize(method)
-      console.log(methodCapitalize)
+      `--typeTask=${typeTask} `;
+    if (typeTask === "REST") {
+      const methodCapitalize = smartCapitalize(method);
+      console.log(methodCapitalize);
 
-      command += `--method=${methodCapitalize}`
+      command += `--method=${methodCapitalize}`;
     }
 
     try {
@@ -124,20 +139,22 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createPipeline= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
-    const { name, type} = req.body;
+  static createPipeline = async (req: Request, res: Response) => {
+    const projectPath =
+      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const { name, type } = req.body;
     const command =
-      `gradle generatePipeline ` +
-      `--name=${name} ` +
-      `--type=${type}`
+      `gradle generatePipeline ` + `--name=${name} ` + `--type=${type}`;
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
@@ -146,19 +163,21 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createDataBase= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+  static createDataBase = async (req: Request, res: Response) => {
+    const projectPath =
+      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { type } = req.body;
-    const command =
-      `gradle dbConnection ` +
-      `--dataBase=${type} `
+    const command = `gradle dbConnection ` + `--dataBase=${type} `;
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
@@ -167,21 +186,32 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
-  static createCritalRoot= async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
-    const { componentName, features, language} = req.body;
+  static createCritalRoot = async (req: Request, res: Response) => {
+    const projectPath =
+      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const { componentName, features, language } = req.body;
+
+    const featureStrings = features
+      .map((feature) => {
+        return `${feature.folderName}/${feature.featureName}`;
+      })
+      .join(",");
+
     const command =
       `gradle generateCriticalRoot ` +
       `--componentName=${componentName} ` +
-      `--features=${features} ` +
-      `--language=${language}`
+      `--features=${featureStrings} ` +
+      `--language=${language}`;
     try {
       exec(command, { cwd: projectPath }, (error, stdout, stderr) => {
         if (error) {
@@ -190,11 +220,57 @@ export class ComandController {
         if (stderr) {
           return res.status(400).json({ stderr });
         }
-        return res.status(200).json({ command: command, message: 'Comando ejecutado correctamente' });
+        return res.status(200).json({
+          command: command,
+          message: "Comando ejecutado correctamente",
+        });
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
     }
   };
 
+  static getFoldersFeature = async (req: Request, res: Response) => {
+    const projectPath =
+      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test/src/test/resources/features";
+
+    try {
+      fs.readdir(projectPath, { withFileTypes: true }, (err, archivos) => {
+        if (err) {
+          return res.status(500).json({ error: "Error al leer la ruta" });
+        }
+
+        const folders = archivos
+          .filter((dirent) => dirent.isDirectory())
+          .map((dirent) => dirent.name);
+
+        res.status(200).json({ folders });
+      });
+    } catch (error) {
+      res.status(400).json({ error: "Hubo un error no controlado" });
+    }
+  };
+
+  static getListFeature = async (req: Request, res: Response) => {
+    const {folder} = req.params
+
+    const projectPath =
+      `C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test/src/test/resources/features/${folder}`;
+
+    try {
+      fs.readdir(projectPath, { withFileTypes: true }, (err, items) => {
+        if (err) {
+          return res.status(500).json({ error: "Error al leer la ruta" });
+        }
+
+        const files = items
+          .filter((item) => item.isFile())
+          .map((item) => item.name);
+
+        res.status(200).json({ files });
+      });
+    } catch (error) {
+      res.status(400).json({ error: "Hubo un error no controlado" });
+    }
+  };
 }

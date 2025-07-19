@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ComandController } from "../controllers/ComandController";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { handleInputErrors } from "../middleware/validation";
 
 const router = Router();
@@ -195,10 +195,18 @@ router.post(
     .withMessage("El nombre no puede contener caracteres especiales"),
 
   body("features")
+    .isArray({ min: 1 }),
+
+  body("features.*.featureName")
     .notEmpty()
-    .withMessage("Los nombres de los feature son obligatorios")
+    .withMessage("Cada feature debe tener un nombre")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("Lo nombres no puede contener caracteres especiales"),
+    .withMessage("El nombre del feature no puede contener caracteres especiales"),
+
+  body("features.*.folderName")
+    .optional()
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage("El nombre de la carpeta no puede tener caracteres especiales"),
 
   body("language")
     .toUpperCase()
@@ -210,4 +218,10 @@ router.post(
   handleInputErrors,
   ComandController.createCritalRoot
 );
+
+router.get("/getFolderFeature/:folder",
+  param("folder").notEmpty().withMessage("El nombre de la carpeta es necesaria"),
+  ComandController.getListFeature
+);
+
 export default router;

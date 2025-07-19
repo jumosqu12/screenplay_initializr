@@ -49,12 +49,15 @@ dependencies {
     annotationProcessor  "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly  "org.projectlombok:lombok:${lombokVersion}"
 
+    //postgresql library
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
     //Additional library
     implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.12.0'
 
 }
 
 tasks.named('test') {
+    systemProperty 'PASSPSQL', System.getProperty('PASSPSQL')
     // System configs
 
 }

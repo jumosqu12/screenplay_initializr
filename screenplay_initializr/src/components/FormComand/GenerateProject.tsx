@@ -53,8 +53,8 @@ export default function GenerateProject() {
           })}
         />
 
-        {errors.projectName && (
-          <ErrorMessage>{errors.projectName.message}</ErrorMessage>
+        {errors.groupId && (
+          <ErrorMessage>{errors.groupId.message}</ErrorMessage>
         )}
       </div>
 
@@ -71,8 +71,8 @@ export default function GenerateProject() {
           })}
         />
 
-        {errors.projectName && (
-          <ErrorMessage>{errors.projectName.message}</ErrorMessage>
+        {errors.principalPackage && (
+          <ErrorMessage>{errors.principalPackage.message}</ErrorMessage>
         )}
       </div>
 

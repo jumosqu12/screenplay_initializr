@@ -22,6 +22,17 @@ export const LIST_TYPE_PROJECTS : {[key: string] : string } = {
     UX: 'Interfaces de usuario UI'
 }
 
+export const LIST_TYPE_REST: string[]  = ["GET", "POST", "PUT", "PATCH", "OPTIONS", "GENERIC"]
+
+export const LIST_TYPE_TASK: string[]  = ["REST", "UX"]
+
+export const LIST_TYPE_PIPELINE: string[]  = ["Azure"]
+
+export const LIST_TYPE_DB: string[]  = ["MYSQL", "POSTGRESQL", "ORACLE", "SQLSERVER", "AS400"]
+
+export const LIST_LANGUAGE: {[key: string] : string }  =  {ES: "Español", EN: "Ingles"};
+
+
 
 export const projectComandSchema = z.object({
     projectName: z.string(),
@@ -63,12 +74,17 @@ export const pipelineComandSchema = z.object({
 })
 
 export const dataBaseComandSchema = z.object({
-    dataBase: z.string(),
+    type: z.string(),
 })
 
 export const criticalRootComandSchema = z.object({
     componentName: z.string(),
-    features: z.string(),
+    features: z.array(
+        z.object({
+            featureName: z.string(),
+            folderName: z.string()
+        })
+    ),
     language: z.string()
     
 })
