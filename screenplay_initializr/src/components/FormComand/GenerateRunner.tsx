@@ -1,6 +1,9 @@
+import { createRunners } from "@/services/ComandsApi";
 import type { RunnerComand } from "../../utils";
 import ErrorMessage from "../ErrorMessage";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 export default function GenerateRunner() {
   
@@ -14,8 +17,24 @@ export default function GenerateRunner() {
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues: initialValue });
+  
+  const mutation = useMutation({
+    mutationFn: createRunners,
+    onError: (error) => {
+      if (Array.isArray(error)) {
+        error.forEach((err: any) => {
+          toast.error(err.msg);
+        });
+      }
+    },
+    onSuccess(data) {
+      toast.success(data.message);
+    },
+  });
 
-  const handleForm = async (formData: RunnerComand) => {};
+  const handleForm = async (formData: RunnerComand) => {
+    mutation.mutate(formData);
+  };
 
   return (
     <form
@@ -28,7 +47,7 @@ export default function GenerateRunner() {
             htmlFor="name"
             className="text-sm uppercase font-bold"
           >
-            Nombre de Runner
+            Runner Name
           </label>
           <input
             id="name"
@@ -36,7 +55,7 @@ export default function GenerateRunner() {
             type="text"
             {...register("name", {
               required:
-                "El nombre de la clase runner es obligatorio",
+                "The class name is required",
             })}
           />
 
@@ -51,7 +70,7 @@ export default function GenerateRunner() {
             htmlFor="folderName"
             className="text-sm uppercase font-bold"
           >
-            Nombre de la carpeta de Runners
+            Runner Folder name
           </label>
           <input
             id="folderName"
@@ -59,7 +78,7 @@ export default function GenerateRunner() {
             type="text"
             {...register("folderName", {
               required:
-                "El nombre de la carpeta contenedora de Runners es obligatorio",
+                "The name runner folder is required",
             })}
           />
 
@@ -71,7 +90,7 @@ export default function GenerateRunner() {
 
       <input
         type="submit"
-        value="Crear Interaction"
+        value="Create Runner"
         className="bg-blue-500 hover:bg-blue-400 w-full p-3
                         text-white uppercase font-bold cursor-pointer transition-colors"
       />

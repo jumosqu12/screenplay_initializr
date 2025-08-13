@@ -1,6 +1,9 @@
 import { LIST_LANGUAGE, type CriticalComand } from "../../utils";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getFoldersFeature } from "@/services/ComandsApi";
 
 export default function GenerateCriticalRoot() {
   const initialValue: CriticalComand = {
@@ -14,6 +17,14 @@ export default function GenerateCriticalRoot() {
     language: "",
   };
 
+  const [localFolders, setLocalFolders] = useState()
+
+  const { data, isError, isLoading } = useQuery({
+        queryKey: ['folders'],
+        queryFn: () => getFoldersFeature,
+        retry: false
+    })
+    
   const {
     register,
     handleSubmit,
@@ -23,20 +34,20 @@ export default function GenerateCriticalRoot() {
   const handleForm = async (formData: CriticalComand) => {};
   return (
     <form
-      className="mt-10  p-10 rounded-lg"
+      className="mt-10 p-10 rounded-lg"
       onSubmit={handleSubmit(handleForm)}
       noValidate
     >
       <div className="mb-5 space-y-3">
         <label htmlFor="componentName" className="text-sm uppercase font-bold">
-          Nombre del Componente
+          Component name
         </label>
         <input
           id="componentName"
           className="w-full p-3  border border-gray-200"
           type="text"
           {...register("componentName", {
-            required: "El nombre del pipeline es obligatorio",
+            required: "The component name is required",
           })}
         />
 

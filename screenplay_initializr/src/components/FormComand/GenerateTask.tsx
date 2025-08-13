@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { LIST_TYPE_REST, LIST_TYPE_TASK, type TaskComand } from "../../utils";
 import ErrorMessage from "../ErrorMessage";
 import { useState } from "react";
+import { createTask } from "@/services/ComandsApi";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function GenerateTask() {
   const initialValue: TaskComand = {
@@ -11,6 +14,7 @@ export default function GenerateTask() {
   };
 
   const [requestMethod, setRequestMethod] = useState(false);
+  const [typeTask, setTypeTask] = useState({ typeTask: "", typeMethod: "" });
 
   const {
     register,
@@ -18,12 +22,34 @@ export default function GenerateTask() {
     formState: { errors },
   } = useForm({ defaultValues: initialValue });
 
-  const handleForm = async (formData: TaskComand) => {};
+  const mutation = useMutation({
+    mutationFn: createTask,
+    onError: (error) => {
+      if (Array.isArray(error)) {
+        error.forEach((err: any) => {
+          toast.error(err.msg);
+        });
+      }
+    },
+    onSuccess(data) {
+      toast.success(data.message);
+    },
+  });
+
+  const handleForm = async (formData: TaskComand) => {
+    formData.typeTask = typeTask.typeTask;
+    formData.method = typeTask.typeMethod;
+    mutation.mutate(formData);
+  };
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    e.target.value === "REST"
-      ? setRequestMethod(true)
-      : setRequestMethod(false);
+    const value = e.target.value;
+    if (e.target.id === "typeTask") {
+      setTypeTask({typeTask: value, typeMethod: ""});
+      value === "REST" ? setRequestMethod(true) : setRequestMethod(false);
+    }else{
+      setTypeTask({...typeTask, typeMethod: value});
+    }
   };
 
   return (
@@ -34,14 +60,14 @@ export default function GenerateTask() {
     >
       <div className="mb-5 space-y-3">
         <label htmlFor="name" className="text-sm uppercase font-bold">
-          Nombre de Task
+          Task Name
         </label>
         <input
           id="name"
           className="w-full p-3  border border-gray-200"
           type="text"
           {...register("name", {
-            required: "El nombre de la clase Task es obligatorio",
+            required: "Task name is required",
           })}
         />
 
@@ -50,14 +76,15 @@ export default function GenerateTask() {
 
       <div className="mb-5 space-y-3">
         <label htmlFor="typeTask" className="text-sm uppercase font-bold">
-          Tipo de Task
+          Type of Task
         </label>
         <select
+          id="typeTask"
           className="w-full p-3 bg-white border border-gray-300"
           defaultValue={""}
           onChange={handleChange}
         >
-          <option selected>--- Selecciona una opción ---</option>
+          <option selected>--- Choose value ---</option>
           {LIST_TYPE_TASK.map((task) => (
             <option key={task} value={task}>
               {task}
@@ -73,13 +100,15 @@ export default function GenerateTask() {
       {requestMethod && (
         <div className="mb-5 space-y-3">
           <label htmlFor="method" className="text-sm uppercase font-bold">
-            Tipo de Método REST
+            Rest method Type
           </label>
           <select
+            id="method"
             className="w-full p-3 bg-white border border-gray-300"
             defaultValue={""}
             onChange={handleChange}
           >
+            <option value="">--- Choose value ---</option>
             {LIST_TYPE_REST.filter(
               (taskFilter) => taskFilter !== "GENERIC"
             ).map((task) => (
@@ -97,7 +126,7 @@ export default function GenerateTask() {
 
       <input
         type="submit"
-        value="Crear Interaction"
+        value="Create Task"
         className="bg-blue-500 hover:bg-blue-400 w-full p-3
                             text-white uppercase font-bold cursor-pointer transition-colors"
       />

@@ -6,7 +6,7 @@ import { param } from "express-validator";
 
 export class ComandController {
   static createProject = async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { projectName, groupId, principalPackage, type } = req.body;
     const command =
       `gradle screenPlayArchitecture ` +
@@ -60,7 +60,7 @@ export class ComandController {
   };
 
   static createRunners = async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { name, folderName } = req.body;
     const command =
       `gradle generateRunner ` +
@@ -85,7 +85,7 @@ export class ComandController {
   };
 
   static createRestInteraction = async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/junio/Documents/ScreenPlayArchitecture/test";
+    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
     const { typeInteraction, nameInteraction } = req.body;
 
     let command =

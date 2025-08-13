@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import HomePageView from "../views/HomePageView";
 
 export default function AppLayout() {
   return (
@@ -11,11 +11,11 @@ export default function AppLayout() {
             </div>
         </header>
         
-        <section className="max-w-screen-2xl mx-auto mt-10 p-5">
-            <Outlet />
+        <section className="container min-h-screen mx-auto pt-5">
+            <HomePageView/>
         </section>
 
-        <footer className="py-5">
+        <footer className="py-2">
             <p className='text-center'>
                 Todos los derechos reservados &copy;{new Date().getFullYear()}
             </p>

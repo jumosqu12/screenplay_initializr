@@ -1,7 +1,8 @@
 import FolderTree from "../components/previewStation/FolderTree";
-import FormConfigurateComand from "../components/FormComand/FormConfigurateComand";
 import ListTask from "../components/ListTask"
 import { LIST_TASK } from "../utils"
+import { Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 
 
 export default function HomePageView() {
@@ -9,9 +10,9 @@ export default function HomePageView() {
   const listTask = LIST_TASK;
 
   return (
-    <div className='grid grid-cols-12 gap-4 '>
+    <div className='flex flex-row gap-5'>
         <div 
-          className='border border-gray-300 col-span-2 rounded-md p-5 flex flex-col gap-4
+          className='basis-1/5 border border-gray-300 rounded-md p-5 flex flex-col gap-4
           '>
          {
           listTask.map(taskList => (
@@ -21,12 +22,13 @@ export default function HomePageView() {
           ))
          }
         </div>
-        <div className='border border-gray-300 col-span-5 rounded-md '>
-          <FormConfigurateComand/>
+        <div className='basis-1/2 border border-gray-300 col-span-5 rounded-md '>
+          <Outlet />
         </div>
-        <div className='border border-gray-300 col-span-5 rounded-md '>
+        <div className='basis-1/2 border border-gray-300 col-span-5 rounded-md '>
           <FolderTree />
         </div>
+        <Toaster richColors position="top-right" />
     </div>
   )
 }

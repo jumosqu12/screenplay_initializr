@@ -3,23 +3,24 @@ import { z } from "zod"
 export type Task = {
     title: string,
     comand: string,
-    icon: string
+    icon: string,
+    to: string
 }
 
 export const LIST_TASK: Task[] = [
-    { title: "Project", comand: "runProject", icon: "project-management"},
-    { title: "Feature", comand: "runFeature", icon: "cucumber"},
-    { title: "Runners", comand: "runRunners", icon: "play-button"},
-    { title: "Interaction", comand: "runInteraction", icon: "social-network"},
-    { title: "Task", comand: "runTask", icon: "checklist"},
-    { title: "Pipeline", comand: "runPipeline", icon: "water-pipe"},
-    { title: "Critical Root", comand: "runCriticalRoot", icon: "route"},
-    { title: "Data Base connection", comand: "runDataBaseConnection", icon: "database"}
+    { title: "Project", comand: "runProject", icon: "project-management", to: "/"},
+    { title: "Feature", comand: "runFeature", icon: "cucumber", to: "/generateFeature"},
+    { title: "Runners", comand: "runRunners", icon: "play-button", to: "/generateRunner"},
+    { title: "Interaction", comand: "runInteraction", icon: "social-network", to: "/generateInteraction"},
+    { title: "Task", comand: "runTask", icon: "checklist", to: "/generateTask"},
+    { title: "Pipeline", comand: "runPipeline", icon: "water-pipe", to: "/generatePipeline"},
+    { title: "Critical Root", comand: "runCriticalRoot", icon: "route", to: "/generateCriticalRoot"},
+    { title: "Data Base connection", comand: "runDataBaseConnection", icon: "database", to: "/generateDbConection"}
 ]
 
 export const LIST_TYPE_PROJECTS : {[key: string] : string } = {
-    REST: 'Microservicios Rest',
-    UX: 'Interfaces de usuario UI'
+    REST: 'Rest Api',
+    UX: 'UI'
 }
 
 export const LIST_TYPE_REST: string[]  = ["GET", "POST", "PUT", "PATCH", "OPTIONS", "GENERIC"]
@@ -43,7 +44,7 @@ export const projectComandSchema = z.object({
 
 export const featureComandSchema = z.object({
     name: z.string(),
-    example: z.boolean(),
+    examples: z.string(),
     nameSubFolder: z.string(),
     
 })
@@ -88,6 +89,7 @@ export const criticalRootComandSchema = z.object({
     language: z.string()
     
 })
+
 export type ProjectComand = z.infer<typeof projectComandSchema>
 export type FeatureComand = z.infer<typeof featureComandSchema>
 export type RunnerComand = z.infer<typeof runnerComandSchema>

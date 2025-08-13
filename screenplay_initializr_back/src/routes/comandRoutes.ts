@@ -93,15 +93,25 @@ router.post(
     .withMessage("El tipo de interaction no es valido"),
 
   body("nameInteraction")
-    .optional()
     .custom((value: string, { req }) => {
-      if (req.body.typeInteraction == "GENERIC" && value.length == 0) {
-        throw new Error("Se requiere el nombre de la interaction");
-      }
-      if (!/^[a-zA-Z]+$/.test(value)) {
-        throw new Error("El nombre no puede contener caracteres especiales");
-      }
+    const isGeneric = req.body.typeInteraction?.toUpperCase() === "GENERIC";
+
+    // Si NO es GENERIC y nameInteraction no se envía o viene vacío → válido
+    if (!isGeneric) {
       return true;
+    }
+
+    // Si es GENERIC, validar que no esté vacío
+    if (!value || value.trim().length === 0) {
+      throw new Error("Se requiere el nombre de la interaction");
+    }
+
+    // Validar solo letras
+    if (!/^[a-zA-Z]+$/.test(value)) {
+      throw new Error("El nombre no puede contener caracteres especiales");
+    }
+
+    return true;
     }),
 
   handleInputErrors,
