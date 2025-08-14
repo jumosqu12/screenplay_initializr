@@ -2,8 +2,9 @@ import { LIST_LANGUAGE, type CriticalComand } from "../../utils";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getFoldersFeature } from "@/services/ComandsApi";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllFeatures, getFoldersFeature } from "@/services/ComandsApi";
+import { data } from "react-router-dom";
 
 export default function GenerateCriticalRoot() {
   const initialValue: CriticalComand = {
@@ -17,14 +18,23 @@ export default function GenerateCriticalRoot() {
     language: "",
   };
 
-  const [localFolders, setLocalFolders] = useState()
+  const [folder, setFolders] = useState("")
 
-  const { data, isError, isLoading } = useQuery({
+  const queryClient = useQueryClient()
+  
+  const { data:listFolder, isError: foldersError, isLoading:loadFolders } = useQuery({
         queryKey: ['folders'],
-        queryFn: () => getFoldersFeature,
+        queryFn: getFoldersFeature,
+        retry: false
+  })
+
+  const { data:featuresList, isError: featuresError, isLoading:loadfeatures } = useQuery({
+        queryKey: ['features', folder],
+        queryFn: () => getAllFeatures(folder),
+        enabled: !!folder,
         retry: false
     })
-    
+
   const {
     register,
     handleSubmit,
@@ -32,7 +42,13 @@ export default function GenerateCriticalRoot() {
   } = useForm({ defaultValues: initialValue });
 
   const handleForm = async (formData: CriticalComand) => {};
-  return (
+
+  const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    setFolders(value)
+  };
+
+  if (listFolder) return (
     <form
       className="mt-10 p-10 rounded-lg"
       onSubmit={handleSubmit(handleForm)}
@@ -58,14 +74,22 @@ export default function GenerateCriticalRoot() {
 
       <div className="mb-5 space-y-3">
         <label htmlFor="folderName" className="text-sm uppercase font-bold">
-          Carpeta de Features
+          Features folder
         </label>
         <select
           className="w-full p-3 bg-white border border-gray-300"
           defaultValue={""}
-          onChange={() => {}}
+          onChange={handleSelect}
         >
-          <option selected>--- Selecciona una opción ---</option>
+           <option value="">--- Selecciona una opción ---</option>
+          {loadFolders && <option disabled>Cargando...</option>}
+          {foldersError && <option disabled>Error al cargar</option>}
+          {listFolder.folders?.map((folder: string) => (
+            <option key={folder} value={folder}>
+              {folder}
+            </option>
+          ))} 
+        
         </select>
 
         {errors.features && (
@@ -82,7 +106,12 @@ export default function GenerateCriticalRoot() {
           defaultValue={""}
           onChange={() => {}}
         >
-          <option selected>--- Selecciona una opción ---</option>
+          <option selected>--- Choose value ---</option>
+          {
+            featuresList?.files?.map((feature: string) => (
+              <option value={feature}> {feature}</option>
+            ))
+          }
         </select>
 
         {errors.features && (
@@ -92,14 +121,14 @@ export default function GenerateCriticalRoot() {
 
       <div className="mb-5 space-y-3">
         <label htmlFor="language" className="text-sm uppercase font-bold">
-          idioma de los Features
+          Feature language
         </label>
         <select
           className="w-full p-3 bg-white border border-gray-300"
           defaultValue={""}
           onChange={() => {}}
         >
-          <option selected>--- Selecciona una opción ---</option>
+          <option selected>--- Choose value ---</option>
           {Object.entries(LIST_LANGUAGE).map(([key, value]) => (
             <option key={key} value={key}>
               {" "}
@@ -115,7 +144,7 @@ export default function GenerateCriticalRoot() {
 
       <input
         type="submit"
-        value="Crear Pipeline"
+        value="Create Critical Root"
         className="bg-blue-500 hover:bg-blue-400 w-full p-3
                                     text-white uppercase font-bold cursor-pointer transition-colors"
       />

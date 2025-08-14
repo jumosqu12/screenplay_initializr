@@ -229,6 +229,10 @@ router.post(
   ComandController.createCritalRoot
 );
 
+router.get("/getFolderFeature",
+  ComandController.getFoldersFeature
+);
+
 router.get("/getFolderFeature/:folder",
   param("folder").notEmpty().withMessage("El nombre de la carpeta es necesaria"),
   ComandController.getListFeature

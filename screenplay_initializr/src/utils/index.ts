@@ -31,7 +31,7 @@ export const LIST_TYPE_PIPELINE: string[]  = ["Azure"]
 
 export const LIST_TYPE_DB: string[]  = ["MYSQL", "POSTGRESQL", "ORACLE", "SQLSERVER", "AS400"]
 
-export const LIST_LANGUAGE: {[key: string] : string }  =  {ES: "Español", EN: "Ingles"};
+export const LIST_LANGUAGE: {[key: string] : string }  =  {ES: "Spanish", EN: "English"};
 
 
 

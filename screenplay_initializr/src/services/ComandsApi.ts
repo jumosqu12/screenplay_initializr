@@ -111,3 +111,15 @@ export async function getFoldersFeature() {
         }
     }
 }
+
+export async function getAllFeatures(folder: string) {
+    
+    try {
+        const { data } = await api.get(`/getFolderFeature/${folder}`)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw error.response.data.errors;
+        }
+    }
+}
