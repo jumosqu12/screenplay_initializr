@@ -4,7 +4,8 @@ import ErrorMessage from "../ErrorMessage";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllFeatures, getFoldersFeature } from "@/services/ComandsApi";
-import { data } from "react-router-dom";
+import ListCriticalRoot from "./ListCriticalRoot";
+import { PlusCircleIcon } from "@heroicons/react/16/solid";
 
 export default function GenerateCriticalRoot() {
   const initialValue: CriticalComand = {
@@ -19,6 +20,7 @@ export default function GenerateCriticalRoot() {
   };
 
   const [folder, setFolders] = useState("")
+  const [select, setSelect] = useState({features: "", language: ""})
 
   const queryClient = useQueryClient()
   
@@ -41,11 +43,20 @@ export default function GenerateCriticalRoot() {
     formState: { errors },
   } = useForm({ defaultValues: initialValue });
 
-  const handleForm = async (formData: CriticalComand) => {};
+  const handleForm = async (formData: CriticalComand) => {
+    
+  };
 
   const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    setFolders(value)
+    const id = e.target.id
+    if (id === 'folders') {
+      setFolders(value)
+    }else if (id === 'features') {
+      setSelect({...select, features: value, language: ""})
+    }else {
+      setSelect({...select, language: value})
+    }
   };
 
   if (listFolder) return (
@@ -77,6 +88,7 @@ export default function GenerateCriticalRoot() {
           Features folder
         </label>
         <select
+          id="folders"
           className="w-full p-3 bg-white border border-gray-300"
           defaultValue={""}
           onChange={handleSelect}
@@ -102,6 +114,7 @@ export default function GenerateCriticalRoot() {
           Features
         </label>
         <select
+          id="features"
           className="w-full p-3 bg-white border border-gray-300"
           defaultValue={""}
           onChange={() => {}}
@@ -124,6 +137,7 @@ export default function GenerateCriticalRoot() {
           Feature language
         </label>
         <select
+          id="language"
           className="w-full p-3 bg-white border border-gray-300"
           defaultValue={""}
           onChange={() => {}}
@@ -141,13 +155,22 @@ export default function GenerateCriticalRoot() {
           <ErrorMessage>{errors.language.message}</ErrorMessage>
         )}
       </div>
-
+      <div className="flex gap-3 items-center">
+        <PlusCircleIcon className="size-6 cursor-pointer"/>
+     
       <input
         type="submit"
         value="Create Critical Root"
         className="bg-blue-500 hover:bg-blue-400 w-full p-3
                                     text-white uppercase font-bold cursor-pointer transition-colors"
       />
+      </div>
+      
+
+    <ListCriticalRoot />
+
     </form>
+
+
   );
 }

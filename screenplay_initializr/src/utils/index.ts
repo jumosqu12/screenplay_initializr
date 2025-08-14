@@ -7,6 +7,12 @@ export type Task = {
     to: string
 }
 
+export type Root = {
+    component: string,
+    folder: string,
+    feature: string
+}
+
 export const LIST_TASK: Task[] = [
     { title: "Project", comand: "runProject", icon: "project-management", to: "/"},
     { title: "Feature", comand: "runFeature", icon: "cucumber", to: "/generateFeature"},
