@@ -1,32 +1,35 @@
 import { createCritalRoot } from "@/services/ComandsApi";
-import type { CriticalComand, Root } from "@/utils/index";
+import { mergeFeatures } from "@/utils/accumulate";
+import type { CriticalRequest } from "@/utils/index";
 import { XCircleIcon } from "@heroicons/react/16/solid";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type ListCriticalRootProps = {
-  listComponent: CriticalComand[];
+  listComponent: CriticalRequest;
 };
 
 export default function ListCriticalRoot({
   listComponent,
 }: ListCriticalRootProps) {
-  const [roots, setRoots] = useState<CriticalComand[]>([]);
+  const [roots, setRoots] = useState<CriticalRequest[]>([]);
 
-  const mutate = useMutation({
+  const mutation = useMutation({
     mutationFn: createCritalRoot,
     onSuccess: (data) => {
-        toast.success(data.message)
+      toast.success(data.message);
     },
-    onError: (data) => {
-        toast.error(data.message)
-    }
-  })
+    onError: (errors) => {
+      if (Array.isArray(errors)) {
+        errors.forEach((err) => toast.error(err.msg));
+      }
+    },
+  });
 
   useEffect(() => {
-    if (listComponent && Array.isArray(listComponent)) {
-      setRoots((prev) => [...prev, ...listComponent]);
+    if (listComponent && Object.keys(listComponent).length > 0) {
+      setRoots((prev) => [...prev, listComponent]);
     }
   }, [listComponent]);
 
@@ -35,9 +38,10 @@ export default function ListCriticalRoot({
   };
 
   const handleSubmit = () => {
-    mutate()
-  }
- 
+    const data = mergeFeatures(roots);
+    mutation.mutate(data);
+  };
+
   return (
     <div>
       <div className="flex gap-3 items-center">
@@ -56,15 +60,21 @@ export default function ListCriticalRoot({
             className="bg-blue-500 hover:bg-blue-400 w-full p-3
                                     text-white uppercase font-bold cursor-pointer transition-colors"
           />
-        ):("")}
+        ) : (
+          ""
+        )}
       </div>
       {roots.map((root, index) => (
         <div className="bg-blue-400 mt-3 p-2 flex justify-between text-white">
           <p>{root.componentName}</p>
           <span> - </span>
-          <p>{root.features.folderName}</p>
-          <span> - </span>
-          <p>{root.features.featureName}</p>
+          {root.features?.map((files) => (
+            <>
+              <p key={files.folderName}>{files.folderName}</p>
+              <span> - </span>
+              <p key={files.featureName}>{files.featureName}</p>
+            </>
+          ))}
           <div className="cursor-pointer">
             <XCircleIcon
               onClick={() => deleteComponent(index)}

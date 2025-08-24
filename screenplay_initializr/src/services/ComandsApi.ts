@@ -1,5 +1,5 @@
 import api from "@/libs/axios";
-import type { CriticalComand, DataBaseComand, FeatureComand, PipelineComand, ProjectComand, RestInterComand, RunnerComand, TaskComand } from "@/utils/index";
+import type { CriticalRequest, DataBaseComand, FeatureComand, PipelineComand, ProjectComand, RestInterComand, RunnerComand, TaskComand } from "@/utils/index";
 import { isAxiosError } from "axios";
 
 
@@ -88,7 +88,7 @@ export async function createDataBase(formData: DataBaseComand) {
     }
 }
 
-export async function createCritalRoot(formData: CriticalComand) {
+export async function createCritalRoot(formData: CriticalRequest) {
     
     try {
         const { data } = await api.post("/createCritalRoot", formData)

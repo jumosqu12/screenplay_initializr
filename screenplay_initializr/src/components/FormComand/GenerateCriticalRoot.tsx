@@ -1,11 +1,10 @@
-import { LIST_LANGUAGE, type CriticalComand } from "../../utils";
+import { LIST_LANGUAGE, type CriticalComand, type CriticalRequest } from "../../utils";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getAllFeatures, getFoldersFeature } from "@/services/ComandsApi";
 import ListCriticalRoot from "./ListCriticalRoot";
-import { PlusCircleIcon } from "@heroicons/react/16/solid";
 
 export default function GenerateCriticalRoot() {
   const initialValue: CriticalComand = {
@@ -22,9 +21,7 @@ export default function GenerateCriticalRoot() {
     features: "",
     language: "",
   });
-  const [listComponent, setListComponent] = useState<CriticalComand[]>([]);
-
-  const queryClient = useQueryClient();
+  const [listComponent, setListComponent] = useState<CriticalRequest>({});
 
   const {
     data: listFolder,
@@ -37,9 +34,7 @@ export default function GenerateCriticalRoot() {
   });
 
   const {
-    data: featuresList,
-    isError: featuresError,
-    isLoading: loadfeatures,
+    data: featuresList
   } = useQuery({
     queryKey: ["features", select.folder],
     queryFn: () => getAllFeatures(select.folder),
@@ -54,10 +49,13 @@ export default function GenerateCriticalRoot() {
   } = useForm({ defaultValues: initialValue });
 
   const handleForm = async (formData: CriticalComand) => {
-    formData.features.folderName = select.folder;
-    formData.features.featureName = select.features.replace(/\.feature$/, "");
-    formData.language = select.language;
-    setListComponent([formData]);
+    setListComponent(
+      {
+        componentName: formData.componentName, 
+        language: select.language, 
+        features: [{featureName: select.features.replace(/\.feature$/, ""), folderName: select.folder }]
+      }
+    );
   };
 
   const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -137,7 +135,7 @@ export default function GenerateCriticalRoot() {
           >
             <option selected>--- Choose value ---</option>
             {featuresList?.files?.map((feature: string) => (
-              <option value={feature}> {feature}</option>
+              <option key={feature} value={feature}> {feature}</option>
             ))}
           </select>
 

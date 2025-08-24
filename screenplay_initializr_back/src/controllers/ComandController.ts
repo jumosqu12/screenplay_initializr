@@ -3,10 +3,12 @@ import { smartCapitalize } from "../utils/capitalize";
 const { exec } = require("child_process");
 import fs from "fs";
 import { param } from "express-validator";
+import dotenv from "dotenv";
+dotenv.config();
 
 export class ComandController {
   static createProject = async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { projectName, groupId, principalPackage, type } = req.body;
     const command =
       `gradle screenPlayArchitecture ` +
@@ -33,8 +35,7 @@ export class ComandController {
   };
 
   static createFeature = async (req: Request, res: Response) => {
-    const projectPath =
-      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { name, nameSubFolder, examples } = req.body;
     const command =
       `gradle generateFeature ` +
@@ -60,7 +61,7 @@ export class ComandController {
   };
 
   static createRunners = async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { name, folderName } = req.body;
     const command =
       `gradle generateRunner ` +
@@ -85,7 +86,7 @@ export class ComandController {
   };
 
   static createRestInteraction = async (req: Request, res: Response) => {
-    const projectPath = "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { typeInteraction, nameInteraction } = req.body;
 
     let command =
@@ -115,8 +116,7 @@ export class ComandController {
   };
 
   static createTask = async (req: Request, res: Response) => {
-    const projectPath =
-      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { name, typeTask, method } = req.body;
     const nameCapitalize = smartCapitalize(name);
 
@@ -150,8 +150,7 @@ export class ComandController {
   };
 
   static createPipeline = async (req: Request, res: Response) => {
-    const projectPath =
-      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { name, type } = req.body;
     const command =
       `gradle generatePipeline ` + `--name=${name} ` + `--type=${type}`;
@@ -174,8 +173,7 @@ export class ComandController {
   };
 
   static createDataBase = async (req: Request, res: Response) => {
-    const projectPath =
-      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { type } = req.body;
     const command = `gradle dbConnection ` + `--dataBase=${type} `;
     try {
@@ -197,8 +195,7 @@ export class ComandController {
   };
 
   static createCritalRoot = async (req: Request, res: Response) => {
-    const projectPath =
-      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test";
+    const projectPath = process.env.ROOT;
     const { componentName, features, language } = req.body;
 
     const featureStrings = features
@@ -231,9 +228,7 @@ export class ComandController {
   };
 
   static getFoldersFeature = async (req: Request, res: Response) => {
-    const projectPath =
-      "C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test/src/test/resources/features";
-
+    const projectPath = `${process.env.ROOT}/src/test/resources/features`;
     try {
       fs.readdir(projectPath, { withFileTypes: true }, (err, archivos) => {
         if (err) {
@@ -254,9 +249,7 @@ export class ComandController {
   static getListFeature = async (req: Request, res: Response) => {
     const {folder} = req.params
 
-    const projectPath =
-      `C:/Users/jumosqu/Documents/ScreenPlayArchitecture/screenplay_initializr/test/src/test/resources/features/${folder}`;
-
+    const projectPath = `${process.env.ROOT}/src/test/resources/features/${folder}`;
     try {
       fs.readdir(projectPath, { withFileTypes: true }, (err, items) => {
         if (err) {

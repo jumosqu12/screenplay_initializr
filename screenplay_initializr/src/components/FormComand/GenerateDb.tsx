@@ -1,20 +1,43 @@
 import { LIST_TYPE_DB, type DataBaseComand } from '../../utils';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../ErrorMessage';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { createDataBase } from '@/services/ComandsApi';
+import { toast } from 'sonner';
 
 export default function GenerateDb() {
 
      const initialValue: DataBaseComand = {
         type: "",
       };
-    
+
+      const [typedDb, setTypeDb] = useState("")
+      
+      const mutation = useMutation({
+        mutationFn: createDataBase,
+        onSuccess: (data) => {
+          toast.success(data.message)
+        },
+        onError: (errors) => {
+           if (Array.isArray(errors)) {
+            errors.forEach((err) => toast.error(err.msg));
+            }
+        }
+      })
       const {
-        register,
         handleSubmit,
         formState: { errors },
       } = useForm({ defaultValues: initialValue });
     
-      const handleForm = async (formData: DataBaseComand) => {};
+      const handleForm = async (formData: DataBaseComand) => {
+        formData.type = typedDb
+        mutation.mutate(formData)
+      };
+
+      const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setTypeDb(e.target.value)
+      }
 
   return (
     <form
@@ -26,14 +49,14 @@ export default function GenerateDb() {
     
           <div className="mb-5 space-y-3">
             <label htmlFor="type" className="text-sm uppercase font-bold">
-              Tipo de Base de Datos
+              Type data base
             </label>
             <select
               className="w-full p-3 bg-white border border-gray-300"
               defaultValue={""}
-              onChange={() => {}}
+              onChange={handleSelect}
             >
-              <option selected>--- Selecciona una opción ---</option>
+              <option selected>--- Choose Option ---</option>
               {
                 LIST_TYPE_DB.map(db => (
                     <option key={db} value={db}>{db}</option>
@@ -50,7 +73,7 @@ export default function GenerateDb() {
     
           <input
             type="submit"
-            value="Crear DATA BASE CONECTION"
+            value="Create DATA BASE CONECTION"
             className="bg-blue-500 hover:bg-blue-400 w-full p-3
                                         text-white uppercase font-bold cursor-pointer transition-colors"
           />

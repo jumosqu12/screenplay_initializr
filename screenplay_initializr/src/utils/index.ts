@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { array } from "zod/v4"
 
 export type Task = {
     title: string,
@@ -97,14 +96,14 @@ export const criticalRootComandSchema = z.object({
 })
 
 export const criticalRootRequest = z.object({
-    componentName: z.string(),
+    componentName: z.string().optional(),
     features: z.array(
         z.object({
-            featureName: z.string(),
-            folderName: z.string()
+            featureName: z.string().optional(),
+            folderName: z.string().optional()
         })
-    ),
-    language: z.string()
+    ).optional(),
+    language: z.string().optional()
     
 })
 

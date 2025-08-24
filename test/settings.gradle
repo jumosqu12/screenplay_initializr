@@ -4,4 +4,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'test_prueba'
+rootProject.name = 'test_ddf'
