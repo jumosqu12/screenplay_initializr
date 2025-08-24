@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { array } from "zod/v4"
 
 export type Task = {
     title: string,
@@ -86,6 +87,17 @@ export const dataBaseComandSchema = z.object({
 
 export const criticalRootComandSchema = z.object({
     componentName: z.string(),
+    features: 
+        z.object({
+            featureName: z.string(),
+            folderName: z.string()
+        }),
+    language: z.string()
+    
+})
+
+export const criticalRootRequest = z.object({
+    componentName: z.string(),
     features: z.array(
         z.object({
             featureName: z.string(),
@@ -104,3 +116,4 @@ export type TaskComand = z.infer<typeof taskComandSchema>
 export type PipelineComand = z.infer<typeof pipelineComandSchema>
 export type DataBaseComand = z.infer<typeof dataBaseComandSchema>
 export type CriticalComand = z.infer<typeof criticalRootComandSchema>
+export type CriticalRequest = z.infer<typeof criticalRootRequest>
