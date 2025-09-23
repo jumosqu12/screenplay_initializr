@@ -5,6 +5,7 @@ import { useState } from "react";
 import { createTask } from "@/services/ComandsApi";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { ArrowPathIcon } from "@heroicons/react/16/solid";
 
 export default function GenerateTask() {
   const initialValue: TaskComand = {
@@ -45,10 +46,10 @@ export default function GenerateTask() {
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (e.target.id === "typeTask") {
-      setTypeTask({typeTask: value, typeMethod: ""});
+      setTypeTask({ typeTask: value, typeMethod: "" });
       value === "REST" ? setRequestMethod(true) : setRequestMethod(false);
-    }else{
-      setTypeTask({...typeTask, typeMethod: value});
+    } else {
+      setTypeTask({ ...typeTask, typeMethod: value });
     }
   };
 
@@ -124,12 +125,17 @@ export default function GenerateTask() {
         </div>
       )}
 
-      <input
-        type="submit"
-        value="Create Task"
-        className="bg-blue-500 hover:bg-blue-400 w-full p-3
-                            text-white uppercase font-bold cursor-pointer transition-colors"
-      />
+      <div className="flex flex-col">
+        {mutation.isPending ? (
+          <ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />
+        ) : (
+          <input
+            type="submit"
+            value="Create Task"
+            className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
+          />
+        )}
+      </div>
     </form>
   );
 }

@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createProject } from "@/services/ComandsApi";
 import { useState } from "react";
+import { ArrowPathIcon } from "@heroicons/react/16/solid";
 
 export default function GenerateProject() {
   const initialValue: ProjectComand = {
@@ -13,7 +14,7 @@ export default function GenerateProject() {
     principalPackage: "",
     type: "",
   };
-
+  
   const [select, setSelect] = useState("")
 
   const {
@@ -48,7 +49,7 @@ export default function GenerateProject() {
 
   return (
     <form
-      className="mt-5 px-10 rounded-lg"
+      className="mt-10 p-10 rounded-lg"
       onSubmit={handleSubmit(handleForm)}
       noValidate
     >
@@ -128,13 +129,20 @@ export default function GenerateProject() {
           <ErrorMessage>{errors.projectName.message}</ErrorMessage>
         )}
       </div>
+      
+      <div className="flex flex-col">
 
-      <input
+          {
+            mutation.isPending ? (<ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />):(<input
             type="submit"
             value="Create Project"
-            className="bg-blue-500 hover:bg-blue-400 w-full p-3
-                text-white uppercase font-bold cursor-pointer transition-colors"
-          />
+            className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
+          />)
+          }
+          
+       
+      </div>
+      
     </form>
   );
 }

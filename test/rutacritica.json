@@ -1,23 +1,10 @@
 {
-  "componentes": [
-    {
-      "componente": "test",
-      "fecha_definicion": "24/08/2025",
-      "activo": true,
-      "ruta": [
+    "componentes": [
         {
-          "nombre_feature": "segundo_feature_prueba.feature",
-          "escenarios": [
-            "segundo to evaluate"
-          ]
-        },
-        {
-          "nombre_feature": "primer_feature_segundo_prueba.feature",
-          "escenarios": [
-            "tercer feature"
-          ]
+            "componente": "fff",
+            "fecha_definicion": "22/09/2025",
+            "activo": true,
+            "ruta":[{ "nombre_feature": "3434r34.feature", "escenarios": [] }]
         }
-      ]
-    }
-  ]
+    ]
 }

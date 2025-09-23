@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createPipeline } from "@/services/ComandsApi";
 import { toast } from "sonner";
 import { useState } from "react";
+import { ArrowPathIcon } from "@heroicons/react/16/solid";
 
 export default function GeneratePipeline() {
   const initialValue: PipelineComand = {
@@ -12,7 +13,7 @@ export default function GeneratePipeline() {
     type: "",
   };
   const [type, setType] = useState("");
-  
+
   const {
     register,
     handleSubmit,
@@ -34,13 +35,13 @@ export default function GeneratePipeline() {
   });
 
   const handleForm = async (formData: PipelineComand) => {
-    formData.type = type
+    formData.type = type;
     mutation.mutate(formData);
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setType(value)
+    setType(value);
   };
 
   return (
@@ -85,12 +86,17 @@ export default function GeneratePipeline() {
         {errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
       </div>
 
-      <input
-        type="submit"
-        value="Create Pipeline"
-        className="bg-blue-500 hover:bg-blue-400 w-full p-3
-                                text-white uppercase font-bold cursor-pointer transition-colors"
-      />
+      <div className="flex flex-col">
+        {mutation.isPending ? (
+          <ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />
+        ) : (
+          <input
+            type="submit"
+            value="Create Pipeline"
+            className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
+          />
+        )}
+      </div>
     </form>
   );
 }

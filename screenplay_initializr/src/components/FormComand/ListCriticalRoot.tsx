@@ -1,7 +1,7 @@
 import { createCritalRoot } from "@/services/ComandsApi";
 import { mergeFeatures } from "@/utils/accumulate";
 import type { CriticalRequest } from "@/utils/index";
-import { XCircleIcon } from "@heroicons/react/16/solid";
+import { ArrowPathIcon, XCircleIcon } from "@heroicons/react/16/solid";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -48,24 +48,30 @@ export default function ListCriticalRoot({
         <input
           type="submit"
           value="Add critical Root"
-          className="bg-blue-500 hover:bg-blue-400 w-full p-3
-                                    text-white uppercase font-bold cursor-pointer transition-colors"
+          className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
         />
 
         {roots.length ? (
-          <input
-            type="button"
-            value="Create Critical Root"
-            onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-400 w-full p-3
-                                    text-white uppercase font-bold cursor-pointer transition-colors"
-          />
+          <>
+            <div className="flex flex-col">
+              {mutation.isPending ? (
+                <ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />
+              ) : (
+                <input
+                  type="button"
+                  value="Create Critical Root"
+                  onClick={handleSubmit}
+                  className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
+                />
+              )}
+            </div>
+          </>
         ) : (
           ""
         )}
       </div>
       {roots.map((root, index) => (
-        <div className="bg-blue-400 mt-3 p-2 flex justify-between text-white">
+        <div className="bg-gray-800 mt-3 p-2 flex justify-between text-white">
           <p>{root.componentName}</p>
           <span> - </span>
           {root.features?.map((files) => (

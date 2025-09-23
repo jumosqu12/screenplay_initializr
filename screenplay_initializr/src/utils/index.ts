@@ -107,6 +107,17 @@ export const criticalRootRequest = z.object({
     
 })
 
+
+export const fulltree = z.object({
+    name: z.string(),
+    type: z.string(),
+    children: z.array(z.object({
+        name: z.string(),
+        type: z.string(),
+    }))
+    
+})
+
 export type ProjectComand = z.infer<typeof projectComandSchema>
 export type FeatureComand = z.infer<typeof featureComandSchema>
 export type RunnerComand = z.infer<typeof runnerComandSchema>

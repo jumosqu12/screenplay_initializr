@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createFeature } from "@/services/ComandsApi";
+import { ArrowPathIcon } from "@heroicons/react/16/solid";
 
 export default function GenerateFeature() {
   const [select, setSelect] = useState("");
@@ -105,12 +106,17 @@ export default function GenerateFeature() {
         )}
       </div>
 
-      <input
-        type="submit"
-        value="Create Feature"
-        className="bg-blue-500 hover:bg-blue-400 w-full p-3
-                    text-white uppercase font-bold cursor-pointer transition-colors"
-      />
+      <div className="flex flex-col">
+        {mutation.isPending ? (
+          <ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />
+        ) : (
+          <input
+            type="submit"
+            value="Create Feature"
+            className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
+          />
+        )}
+      </div>
     </form>
   );
 }

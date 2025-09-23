@@ -4,6 +4,7 @@ const { exec } = require("child_process");
 import fs from "fs";
 import { param } from "express-validator";
 import dotenv from "dotenv";
+import path from "path";
 dotenv.config();
 
 export class ComandController {
@@ -247,7 +248,7 @@ export class ComandController {
   };
 
   static getListFeature = async (req: Request, res: Response) => {
-    const {folder} = req.params
+    const { folder } = req.params;
 
     const projectPath = `${process.env.ROOT}/src/test/resources/features/${folder}`;
     try {
@@ -264,6 +265,40 @@ export class ComandController {
       });
     } catch (error) {
       res.status(400).json({ error: "Hubo un error no controlado" });
+    }
+  };
+
+  static getFullTree = async (req: Request, res: Response) => {
+
+    const projectPath = `${process.env.ROOT}`;
+
+    const buildTree = (dirPath: string) => {
+      try {
+        const stats = fs.statSync(dirPath);
+        const name = path.basename(dirPath);
+        if (stats.isFile()) {
+          return { name, type: "file" };
+        }
+
+        const children = fs
+          .readdirSync(dirPath)
+          .map((child) => buildTree(path.join(dirPath, child)));
+
+        return { name, type: "folder", children };
+      } catch (error) {
+        res.status(500).json({ error: "Hubo un error no controlado" });
+      }
+    }
+
+    try {
+      if (!fs.existsSync(projectPath)) {
+        return res.status(404).json({ error: "La ruta no existe" });
+      }
+
+      const tree = buildTree(projectPath);
+      return res.status(200).json(tree);
+    } catch (error) {
+      return res.status(500).json({ error: "Hubo un error al generar la estructura" });
     }
   };
 }
