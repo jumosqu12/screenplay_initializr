@@ -1,0 +1,29 @@
+# Ignorar dependencias
+node_modules/
+
+# Ignorar env
+.env
+.env.local
+.env.*.local
+
+# Ignorar logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Ignorar sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar editor
+.vscode/
+.idea/
+
+# Ignorar cache/build de react y ts
+build/
+.cache/
+out/
+coverage/
+
