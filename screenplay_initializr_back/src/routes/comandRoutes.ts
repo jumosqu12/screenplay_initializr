@@ -5,7 +5,7 @@ import { handleInputErrors } from "../middleware/validation";
 
 const router = Router();
 
-// Tipos válidos
+// Valid types
 const projectTypes = ["REST", "UX"];
 const taskAllowedMethod = ["GET", "POST", "PUT", "PATCH", "OPTIONS", "GENERIC"];
 const dbAllowedType = ["MYSQL", "POSTGRESQL", "ORACLE", "SQLSERVER", "AS400"];
@@ -16,28 +16,28 @@ router.post(
   "/createProject",
   body("projectName")
     .notEmpty()
-    .withMessage("El nombre del proyecto es obligatorio")
+    .withMessage("Project name is required")
     .matches(/^[a-zA-Z_-]+$/)
-    .withMessage("projectName solo puede contener letras sin espacios"),
+    .withMessage("projectName can only contain letters without spaces"),
 
   body("groupId")
     .notEmpty()
-    .withMessage("groupId es requerido")
+    .withMessage("groupId is required")
     .matches(/^[a-zA-Z]+(\.[a-zA-Z]+)*$/)
-    .withMessage("groupId solo puede contener letras y puntos"),
+    .withMessage("groupId can only contain letters and dots"),
 
   body("principalPackage")
     .notEmpty()
-    .withMessage("principalPackage es requerido")
+    .withMessage("principalPackage is required")
     .matches(/^[a-zA-Z]+$/)
-    .withMessage("principalPackage solo puede contener letras sin espacios"),
+    .withMessage("principalPackage can only contain letters without spaces"),
 
   body("type")
     .toUpperCase()
     .notEmpty()
-    .withMessage("type es requerido")
+    .withMessage("type is required")
     .isIn(projectTypes)
-    .withMessage(`type debe ser uno de: ${projectTypes.join(", ")}`),
+    .withMessage(`type must be one of: ${projectTypes.join(", ")}`),
   handleInputErrors,
   ComandController.createProject
 );
@@ -46,21 +46,21 @@ router.post(
   "/createFeature",
   body("name")
     .notEmpty()
-    .withMessage("El nombre del feature es obligatorio")
+    .withMessage("Feature name is required")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("Name no puede contener caracteres especiales"),
+    .withMessage("Name cannot contain special characters"),
 
   body("nameSubFolder")
     .notEmpty()
-    .withMessage("nameSubFolder es requerido")
+    .withMessage("nameSubFolder is required")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("nameSubFolder puede contener caracteres especiales"),
+    .withMessage("nameSubFolder cannot contain special characters"),
 
   body("examples")
     .notEmpty()
-    .withMessage("examples es requerido")
+    .withMessage("examples is required")
     .isBoolean()
-    .withMessage("examples solo puede ser True o False"),
+    .withMessage("examples can only be True or False"),
   handleInputErrors,
   ComandController.createFeature
 );
@@ -69,15 +69,15 @@ router.post(
   "/createRunners",
   body("name")
     .notEmpty()
-    .withMessage("El nombre del runner es obligatorio")
+    .withMessage("Runner name is required")
     .matches(/^[a-zA-Z0-9]+$/)
-    .withMessage("Name no puede contener caracteres especiales"),
+    .withMessage("Name cannot contain special characters"),
 
   body("folderName")
     .notEmpty()
-    .withMessage("nameSubFolder es requerido")
+    .withMessage("folderName is required")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("nameSubFolder puede contener caracteres especiales"),
+    .withMessage("folderName cannot contain special characters"),
 
   handleInputErrors,
   ComandController.createRunners
@@ -88,31 +88,27 @@ router.post(
   body("typeInteraction")
     .toUpperCase()
     .notEmpty()
-    .withMessage("El tipo de interaction es obligatorio")
+    .withMessage("Interaction type is required")
     .isIn(taskAllowedMethod)
-    .withMessage("El tipo de interaction no es valido"),
+    .withMessage("Invalid interaction type"),
 
-  body("nameInteraction")
-    .custom((value: string, { req }) => {
+  body("nameInteraction").custom((value: string, { req }) => {
     const isGeneric = req.body.typeInteraction?.toUpperCase() === "GENERIC";
 
-    // Si NO es GENERIC y nameInteraction no se envía o viene vacío → válido
     if (!isGeneric) {
       return true;
     }
 
-    // Si es GENERIC, validar que no esté vacío
     if (!value || value.trim().length === 0) {
-      throw new Error("Se requiere el nombre de la interaction");
+      throw new Error("Interaction name is required");
     }
 
-    // Validar solo letras
     if (!/^[a-zA-Z]+$/.test(value)) {
-      throw new Error("El nombre no puede contener caracteres especiales");
+      throw new Error("Interaction name cannot contain special characters");
     }
 
     return true;
-    }),
+  }),
 
   handleInputErrors,
   ComandController.createRestInteraction
@@ -122,40 +118,37 @@ router.post(
   "/createTask",
   body("name")
     .notEmpty()
-    .withMessage("El nombre de task es obligatorio")
+    .withMessage("Task name is required")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("El nombre no puede contener caracteres especiales"),
+    .withMessage("Task name cannot contain special characters"),
 
   body("typeTask")
     .toUpperCase()
     .notEmpty()
-    .withMessage("typeTask es requerido")
+    .withMessage("typeTask is required")
     .isIn(projectTypes)
-    .withMessage("El tipo de task no es valido"),
+    .withMessage("Invalid task type"),
 
-  body("method").toUpperCase()
+  body("method")
+    .toUpperCase()
     .custom((value: string, { req }) => {
-
       if (req.body.typeTask === "REST") {
         if (value === undefined || value === null || value.trim().length === 0) {
-          throw new Error("El campo de tipo de método es requerido");
-        }
-      
-        if (!/^[a-zA-Z]+$/.test(value)) {
-          throw new Error(
-            "El tipo de método no puede contener caracteres especiales"
-          );
+          throw new Error("Method type is required");
         }
 
-        // Validar que esté en la lista solo si se envió
+        if (!/^[a-zA-Z]+$/.test(value)) {
+          throw new Error("Method type cannot contain special characters");
+        }
+
         if (!taskAllowedMethod.includes(value)) {
-          throw new Error("El método no es válido");
+          throw new Error("Invalid method");
         }
       }
-      // Si no es REST y viene el campo method, lo validamos (opcional)
-      if (value !== undefined && value !== null && value.trim() !== '') {
+
+      if (value !== undefined && value !== null && value.trim() !== "") {
         if (!/^[a-zA-Z]+$/.test(value)) {
-          throw new Error("El tipo de método no puede contener caracteres especiales");
+          throw new Error("Method type cannot contain special characters");
         }
       }
 
@@ -169,16 +162,16 @@ router.post(
   "/createPipeline",
   body("name")
     .notEmpty()
-    .withMessage("El nombre del pipeline es obligatorio")
+    .withMessage("Pipeline name is required")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("El nombre no puede contener caracteres especiales"),
+    .withMessage("Pipeline name cannot contain special characters"),
 
   body("type")
     .toUpperCase()
     .notEmpty()
-    .withMessage("type es requerido")
+    .withMessage("type is required")
     .isIn(pipelineAllowedType)
-    .withMessage("El tipo de pipeline no es valido"),
+    .withMessage("Invalid pipeline type"),
 
   handleInputErrors,
   ComandController.createPipeline
@@ -189,8 +182,9 @@ router.post(
   body("type")
     .toUpperCase()
     .notEmpty()
-    .withMessage("type es requerido")
-    .isIn(dbAllowedType).withMessage("El tipo de pipeline no es valido"),
+    .withMessage("type is required")
+    .isIn(dbAllowedType)
+    .withMessage("Invalid database type"),
 
   handleInputErrors,
   ComandController.createDataBase
@@ -200,43 +194,40 @@ router.post(
   "/createCritalRoot",
   body("componentName")
     .notEmpty()
-    .withMessage("El nombre del componente es obligatorio")
+    .withMessage("Component name is required")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("El nombre no puede contener caracteres especiales"),
+    .withMessage("Component name cannot contain special characters"),
 
-  body("features")
-    .isArray({ min: 1 }),
+  body("features").isArray({ min: 1 }),
 
   body("features.*.featureName")
     .notEmpty()
-    .withMessage("Cada feature debe tener un nombre")
+    .withMessage("Each feature must have a name")
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("El nombre del feature no puede contener caracteres especiales"),
+    .withMessage("Feature name cannot contain special characters"),
 
   body("features.*.folderName")
     .optional()
     .matches(/^[a-zA-Z0-9_-]+$/)
-    .withMessage("El nombre de la carpeta no puede tener caracteres especiales"),
+    .withMessage("Folder name cannot contain special characters"),
 
   body("language")
     .toUpperCase()
     .notEmpty()
-    .withMessage("language es requerido")
+    .withMessage("language is required")
     .isIn(criticalRootLanAllowed)
-    .withMessage("El idioma no es valido"),
+    .withMessage("Invalid language"),
 
   handleInputErrors,
   ComandController.createCritalRoot
 );
 
-router.get("/getFolderFeature",
-  ComandController.getFoldersFeature
-);
+router.get("/getFolderFeature", ComandController.getFoldersFeature);
 
-router.get("/getFolderFeature/:folder",
-  param("folder").notEmpty().withMessage("El nombre de la carpeta es necesaria"),
+router.get(
+  "/getFolderFeature/:folder",
+  param("folder").notEmpty().withMessage("Folder name is required"),
   ComandController.getListFeature
 );
-
 
 export default router;

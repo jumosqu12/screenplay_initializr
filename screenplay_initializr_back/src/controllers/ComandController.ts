@@ -27,11 +27,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -53,11 +53,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -78,11 +78,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -108,11 +108,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(500).json({ error: "Hubo un error no controlado" });
+      res.status(500).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -142,11 +142,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -165,11 +165,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -187,11 +187,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -220,11 +220,11 @@ export class ComandController {
         }
         return res.status(200).json({
           command: command,
-          message: "Comando ejecutado correctamente",
+          message: "Command executed successfully",
         });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -233,7 +233,7 @@ export class ComandController {
     try {
       fs.readdir(projectPath, { withFileTypes: true }, (err, archivos) => {
         if (err) {
-          return res.status(500).json({ error: "Error al leer la ruta" });
+          return res.status(500).json({ error: "Error reading path" });
         }
 
         const folders = archivos
@@ -243,7 +243,7 @@ export class ComandController {
         res.status(200).json({ folders });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -254,7 +254,7 @@ export class ComandController {
     try {
       fs.readdir(projectPath, { withFileTypes: true }, (err, items) => {
         if (err) {
-          return res.status(500).json({ error: "Error al leer la ruta" });
+          return res.status(500).json({ error: "Error reading path" });
         }
 
         const files = items
@@ -264,7 +264,7 @@ export class ComandController {
         res.status(200).json({ files });
       });
     } catch (error) {
-      res.status(400).json({ error: "Hubo un error no controlado" });
+      res.status(400).json({ error: "Unexpected error occurred" });
     }
   };
 
@@ -286,19 +286,19 @@ export class ComandController {
 
         return { name, type: "folder", children };
       } catch (error) {
-        res.status(500).json({ error: "Hubo un error no controlado" });
+        res.status(500).json({ error: "Unexpected error occurred" });
       }
     }
 
     try {
       if (!fs.existsSync(projectPath)) {
-        return res.status(404).json({ error: "La ruta no existe" });
+        return res.status(404).json({ error: "Path does not exist" });
       }
 
       const tree = buildTree(projectPath);
       return res.status(200).json(tree);
     } catch (error) {
-      return res.status(500).json({ error: "Hubo un error al generar la estructura" });
+      return res.status(500).json({ error: "Error generating project structure" });
     }
   };
 }
