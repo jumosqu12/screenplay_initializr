@@ -8,10 +8,11 @@ import { toast } from "sonner";
 
 type ListCriticalRootProps = {
   listComponent: CriticalRequest;
+  setCommand: React.Dispatch<React.SetStateAction<string>>
 };
 
 export default function ListCriticalRoot({
-  listComponent,
+  listComponent, setCommand
 }: ListCriticalRootProps) {
   const [roots, setRoots] = useState<CriticalRequest[]>([]);
 
@@ -19,6 +20,7 @@ export default function ListCriticalRoot({
     mutationFn: createCritalRoot,
     onSuccess: (data) => {
       toast.success(data.message);
+      setCommand(data.command)
     },
     onError: (errors) => {
       if (Array.isArray(errors)) {

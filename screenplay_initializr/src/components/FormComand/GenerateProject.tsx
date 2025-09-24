@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { createProject } from "@/services/ComandsApi";
 import { useState } from "react";
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
+import ShellCommandBox from "../preconfig/ShellComandBox";
 
 export default function GenerateProject() {
   const initialValue: ProjectComand = {
@@ -14,8 +15,9 @@ export default function GenerateProject() {
     principalPackage: "",
     type: "",
   };
-  
-  const [select, setSelect] = useState("")
+
+  const [select, setSelect] = useState("");
+  const [command, setCommand] = useState('Loding...');
 
   const {
     register,
@@ -28,121 +30,136 @@ export default function GenerateProject() {
     onError: (error) => {
       if (Array.isArray(error)) {
         error.forEach((err: any) => {
-          toast.error(err.msg)
-        })
-        
+          toast.error(err.msg);
+        });
       }
     },
     onSuccess(data) {
-      toast.success(data.message)
-    }
-  })
+      toast.success(data.message);
+      setCommand(data.command)
+    },
+  });
 
   const handleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelect(e.target.value)
+    setSelect(e.target.value);
   };
 
   const handleForm = async (formData: ProjectComand) => {
-    formData.type = select
-    mutation.mutate(formData)
+    formData.type = select;
+    mutation.mutate(formData);
   };
 
   return (
-    <form
-      className="mt-10 p-10 rounded-lg"
-      onSubmit={handleSubmit(handleForm)}
-      noValidate
-    >
-      <div className="mb-5 space-y-3">
-        <label htmlFor="projectName" className="text-sm uppercase font-bold">
-          Project Name
-        </label>
-        <input
-          id="projectName"
-          className="w-full p-3  border border-gray-200"
-          type="text"
-          {...register("projectName", {
-            required: "The project name is required",
-          })}
-        />
+    <>
+      <div className="flex flex-col justify-center p-5">
+        <ShellCommandBox command={command}/>
 
-        {errors.projectName && (
-          <ErrorMessage>{errors.projectName.message}</ErrorMessage>
-        )}
-      </div>
-      <div className="mb-5 space-y-3">
-        <label htmlFor="groupId" className="text-sm uppercase font-bold">
-          Group ID
-        </label>
-        <input
-          id="groupId"
-          className="w-full p-3  border border-gray-200"
-          type="text"
-          {...register("groupId", {
-            required: "The project GroupID is required",
-          })}
-        />
-
-        {errors.groupId && (
-          <ErrorMessage>{errors.groupId.message}</ErrorMessage>
-        )}
-      </div>
-
-      <div className="mb-5 space-y-3">
-        <label htmlFor="principalPackage" className="text-sm uppercase font-bold">
-          Main package name
-        </label>
-        <input
-          id="principalPackage"
-          className="w-full p-3  border border-gray-200"
-          type="text"
-          {...register("principalPackage", {
-            required: "The main project package name is required",
-          })}
-        />
-
-        {errors.principalPackage && (
-          <ErrorMessage>{errors.principalPackage.message}</ErrorMessage>
-        )}
-      </div>
-
-      <div className="mb-5 space-y-3">
-        <label htmlFor="projectName" className="text-sm uppercase font-bold">
-          Type project
-        </label>
-
-        <select
-          className="w-full p-3 bg-white border border-gray-300"
-          defaultValue={""}
-          onChange={handleSelect}
+        <form
+          className="mt-5 border-t border-gray-200"
+          onSubmit={handleSubmit(handleForm)}
+          noValidate
         >
-          <option value="" selected>--- Choose Value ---</option>
-          {Object.entries(LIST_TYPE_PROJECTS).map(([key, value]) => (
-            <option key={key} value={key}>
-              {" "}
-              {value}{" "}
-            </option>
-          ))}
-        </select>
+          <div className="my-5 space-y-3">
+            <label
+              htmlFor="projectName"
+              className="text-sm uppercase font-bold"
+            >
+              Project Name
+            </label>
+            <input
+              id="projectName"
+              className="w-full p-3  border border-gray-200"
+              type="text"
+              {...register("projectName", {
+                required: "The project name is required",
+              })}
+            />
 
-        {errors.projectName && (
-          <ErrorMessage>{errors.projectName.message}</ErrorMessage>
-        )}
-      </div>
-      
-      <div className="flex flex-col">
+            {errors.projectName && (
+              <ErrorMessage>{errors.projectName.message}</ErrorMessage>
+            )}
+          </div>
+          <div className="my-5 space-y-3">
+            <label htmlFor="groupId" className="text-sm uppercase font-bold">
+              Group ID
+            </label>
+            <input
+              id="groupId"
+              className="w-full p-3  border border-gray-200"
+              type="text"
+              {...register("groupId", {
+                required: "The project GroupID is required",
+              })}
+            />
 
-          {
-            mutation.isPending ? (<ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />):(<input
-            type="submit"
-            value="Create Project"
-            className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
-          />)
-          }
-          
-       
+            {errors.groupId && (
+              <ErrorMessage>{errors.groupId.message}</ErrorMessage>
+            )}
+          </div>
+
+          <div className="my-5 space-y-3">
+            <label
+              htmlFor="principalPackage"
+              className="text-sm uppercase font-bold"
+            >
+              Main package name
+            </label>
+            <input
+              id="principalPackage"
+              className="w-full p-3  border border-gray-200"
+              type="text"
+              {...register("principalPackage", {
+                required: "The main project package name is required",
+              })}
+            />
+
+            {errors.principalPackage && (
+              <ErrorMessage>{errors.principalPackage.message}</ErrorMessage>
+            )}
+          </div>
+
+          <div className="my-5 space-y-3">
+            <label
+              htmlFor="projectName"
+              className="text-sm uppercase font-bold"
+            >
+              Type project
+            </label>
+
+            <select
+              className="w-full p-3 bg-white border border-gray-300"
+              defaultValue={""}
+              onChange={handleSelect}
+            >
+              <option value="" selected>
+                --- Choose Value ---
+              </option>
+              {Object.entries(LIST_TYPE_PROJECTS).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {" "}
+                  {value}{" "}
+                </option>
+              ))}
+            </select>
+
+            {errors.projectName && (
+              <ErrorMessage>{errors.projectName.message}</ErrorMessage>
+            )}
+          </div>
+
+          <div className="flex flex-col my-5">
+            {mutation.isPending ? (
+              <ArrowPathIcon className="h-15 mt-5 text-gray-800 animate-spin" />
+            ) : (
+              <input
+                type="submit"
+                value="Create Project"
+                className="w-full p-3 border border-gray-300 hover:bg-gray-800 hover:text-white uppercase font-bold cursor-pointer transition transform duration-200 hover:scale-105 hover:shadow-lg"
+              />
+            )}
+          </div>
+        </form>
       </div>
-      
-    </form>
+    </>
   );
 }

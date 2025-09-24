@@ -1,10 +1,23 @@
 {
-    "componentes": [
+  "componentes": [
+    {
+      "componente": "test",
+      "fecha_definicion": "23/09/2025",
+      "activo": true,
+      "ruta": [
         {
-            "componente": "fff",
-            "fecha_definicion": "22/09/2025",
-            "activo": true,
-            "ruta":[{ "nombre_feature": "3434r34.feature", "escenarios": [] }]
+          "nombre_feature": "feature_prueba.feature",
+          "escenarios": [
+            "Scenario to evaluate"
+          ]
+        },
+        {
+          "nombre_feature": "terminado.feature",
+          "escenarios": [
+            "scenario to evaluate pdn"
+          ]
         }
-    ]
+      ]
+    }
+  ]
 }
