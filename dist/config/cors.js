@@ -15,7 +15,6 @@ const whiteList = [
 whiteList.push(undefined);
 exports.corsConfig = {
     origin: function (origin, callback) {
-        console.log(origin);
         if (whiteList.includes(origin)) {
             callback(null, true);
         }

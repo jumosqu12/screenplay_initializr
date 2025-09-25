@@ -12,8 +12,7 @@ const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 class ComandController {
     static createProject = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
-        console.log(projectPath);
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { projectName, groupId, principalPackage, type } = req.body;
         const command = `gradle screenPlayArchitecture ` +
             `--projectName=${projectName} ` +
@@ -39,7 +38,7 @@ class ComandController {
         }
     };
     static createFeature = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { name, nameSubFolder, examples } = req.body;
         const command = `gradle generateFeature ` +
             `--name=${name} ` +
@@ -64,7 +63,7 @@ class ComandController {
         }
     };
     static createRunners = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { name, folderName } = req.body;
         const command = `gradle generateRunner ` +
             `--name=${name} ` +
@@ -88,7 +87,7 @@ class ComandController {
         }
     };
     static createRestInteraction = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { typeInteraction, nameInteraction } = req.body;
         let command = `gradle generateRestInteraction ` +
             `--typeInteraction=${typeInteraction} `;
@@ -114,7 +113,7 @@ class ComandController {
         }
     };
     static createTask = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { name, typeTask, method } = req.body;
         const nameCapitalize = (0, capitalize_1.smartCapitalize)(name);
         let command = `gradle generateTask ` +
@@ -144,7 +143,7 @@ class ComandController {
         }
     };
     static createPipeline = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { name, type } = req.body;
         const command = `gradle generatePipeline ` + `--name=${name} ` + `--type=${type}`;
         try {
@@ -166,7 +165,7 @@ class ComandController {
         }
     };
     static createDataBase = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { type } = req.body;
         const command = `gradle dbConnection ` + `--dataBase=${type} `;
         try {
@@ -188,7 +187,7 @@ class ComandController {
         }
     };
     static createCritalRoot = async (req, res) => {
-        const projectPath = path_1.default.resolve(process.cwd(), "../../");
+        const projectPath = path_1.default.resolve(process.cwd(), "../");
         const { componentName, features, language } = req.body;
         const featureStrings = features
             .map((feature) => {
@@ -218,7 +217,7 @@ class ComandController {
         }
     };
     static getFoldersFeature = async (req, res) => {
-        const projectPath = `${path_1.default.resolve(process.cwd(), "../../")}/src/test/resources/features`;
+        const projectPath = `${path_1.default.resolve(process.cwd(), "../")}/src/test/resources/features`;
         try {
             fs_1.default.readdir(projectPath, { withFileTypes: true }, (err, archivos) => {
                 if (err) {
@@ -236,7 +235,7 @@ class ComandController {
     };
     static getListFeature = async (req, res) => {
         const { folder } = req.params;
-        const projectPath = `${path_1.default.resolve(process.cwd(), "../../")}/src/test/resources/features/${folder}`;
+        const projectPath = `${path_1.default.resolve(process.cwd(), "../")}/src/test/resources/features/${folder}`;
         try {
             fs_1.default.readdir(projectPath, { withFileTypes: true }, (err, items) => {
                 if (err) {
@@ -253,7 +252,7 @@ class ComandController {
         }
     };
     static getFullTree = async (req, res) => {
-        const projectPath = `${path_1.default.resolve(process.cwd(), "../../")}`;
+        const projectPath = `${path_1.default.resolve(process.cwd(), "../")}`;
         const buildTree = (dirPath) => {
             try {
                 const stats = fs_1.default.statSync(dirPath);
